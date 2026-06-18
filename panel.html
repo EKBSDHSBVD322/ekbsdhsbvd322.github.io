@@ -1,0 +1,101 @@
+panel.html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Panel Educativo</title>
+
+<style>
+
+body{
+background:#111;
+color:white;
+font-family:Arial;
+padding:30px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+td,th{
+border:1px solid #555;
+padding:10px;
+}
+
+th{
+background:gold;
+color:black;
+}
+
+</style>
+
+</head>
+<body>
+
+<h1>Panel de Resultados</h1>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Número</th>
+<th>Fecha</th>
+<th>Idioma</th>
+<th>Plataforma</th>
+</tr>
+
+</thead>
+
+<tbody id="datos"></tbody>
+
+</table>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDTWJzGTpaplffsPLqVuscmslvO5LpBDlo",
+  authDomain: "qr-ph-3711d.firebaseapp.com",
+  projectId: "qr-ph-3711d",
+  storageBucket: "qr-ph-3711d.firebasestorage.app",
+  messagingSenderId: "95440501288",
+  appId: "1:95440501288:web:eb13f33c26c5529d06531d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const tabla = document.getElementById("datos");
+
+const consulta = await getDocs(collection(db,"respuestas"));
+
+consulta.forEach(doc=>{
+
+const d = doc.data();
+
+tabla.innerHTML += `
+<tr>
+<td>${d.numero}</td>
+<td>${d.fecha}</td>
+<td>${d.idioma}</td>
+<td>${d.plataforma}</td>
+</tr>
+`;
+
+});
+
+</script>
+
+</body>
+</html>
+```

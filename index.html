@@ -1,0 +1,121 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demostración Educativa QR</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#111;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+.card{
+    background:#222;
+    padding:30px;
+    border-radius:15px;
+    width:350px;
+}
+button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    background:gold;
+    border:none;
+    font-weight:bold;
+}
+select{
+    width:100%;
+    padding:10px;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+<h2>Demostración Educativa</h2>
+
+<p>Elige un número del 1 al 10</p>
+
+<select id="numero">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+<option value="8">8</option>
+<option value="9">9</option>
+<option value="10">10</option>
+</select>
+
+<button onclick="guardar()">Enviar</button>
+
+<p id="estado"></p>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+addDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDTWJzGTpaplffsPLqVuscmslvO5LpBDlo",
+  authDomain: "qr-ph-3711d.firebaseapp.com",
+  projectId: "qr-ph-3711d",
+  storageBucket: "qr-ph-3711d.firebasestorage.app",
+  messagingSenderId: "95440501288",
+  appId: "1:95440501288:web:eb13f33c26c5529d06531d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.guardar = async function(){
+
+const numero = document.getElementById("numero").value;
+
+try{
+
+await addDoc(collection(db,"respuestas"),{
+
+numero: numero,
+fecha: new Date().toLocaleString(),
+
+navegador: navigator.userAgent,
+
+idioma: navigator.language,
+
+plataforma: navigator.platform
+
+});
+
+document.getElementById("estado").innerHTML =
+"Respuesta enviada correctamente.";
+
+}catch(error){
+
+document.getElementById("estado").innerHTML =
+"Error: " + error;
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
+```
