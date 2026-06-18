@@ -1,9 +1,9 @@
-panel.html
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Panel Educativo</title>
+<title>Panel de Resultados</title>
 
 <style>
 
@@ -14,14 +14,20 @@ font-family:Arial;
 padding:30px;
 }
 
+h1{
+color:gold;
+}
+
 table{
 width:100%;
 border-collapse:collapse;
+margin-top:20px;
 }
 
-td,th{
-border:1px solid #555;
+th,td{
+border:1px solid #444;
 padding:10px;
+text-align:center;
 }
 
 th{
@@ -29,12 +35,21 @@ background:gold;
 color:black;
 }
 
-</style>
+.contador{
+margin-top:10px;
+font-size:18px;
+}
 
+</style>
 </head>
 <body>
 
-<h1>Panel de Resultados</h1>
+<h1>Panel Educativo</h1>
+
+<div class="contador">
+Total respuestas:
+<span id="total">0</span>
+</div>
 
 <table>
 
@@ -42,9 +57,12 @@ color:black;
 
 <tr>
 <th>Número</th>
-<th>Fecha</th>
+<th>Color</th>
+<th>Animal</th>
+<th>Palabra</th>
 <th>Idioma</th>
 <th>Plataforma</th>
+<th>Fecha</th>
 </tr>
 
 </thead>
@@ -79,20 +97,29 @@ const tabla = document.getElementById("datos");
 
 const consulta = await getDocs(collection(db,"respuestas"));
 
+let total = 0;
+
 consulta.forEach(doc=>{
+
+total++;
 
 const d = doc.data();
 
 tabla.innerHTML += `
 <tr>
-<td>${d.numero}</td>
-<td>${d.fecha}</td>
-<td>${d.idioma}</td>
-<td>${d.plataforma}</td>
+<td>${d.numero || "-"}</td>
+<td>${d.color || "-"}</td>
+<td>${d.animal || "-"}</td>
+<td>${d.palabra || "-"}</td>
+<td>${d.idioma || "-"}</td>
+<td>${d.plataforma || "-"}</td>
+<td>${d.fecha || "-"}</td>
 </tr>
 `;
 
 });
+
+document.getElementById("total").innerText = total;
 
 </script>
 
