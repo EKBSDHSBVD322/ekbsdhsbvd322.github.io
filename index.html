@@ -4,61 +4,158 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Demostración Educativa QR</title>
+<title>Evaluación Lancero</title>
 
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
 body{
-    font-family:Arial,sans-serif;
-    background:#111;
-    color:white;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
+background:url('fondo.jpg') center center;
+background-size:cover;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
 }
+
 .card{
-    background:#222;
-    padding:30px;
-    border-radius:15px;
-    width:350px;
+background:rgba(0,0,0,.85);
+width:100%;
+max-width:700px;
+padding:30px;
+border-radius:20px;
+color:white;
+border:2px solid gold;
 }
+
+.logo{
+display:block;
+margin:auto;
+width:140px;
+margin-bottom:20px;
+}
+
+h1{
+text-align:center;
+color:gold;
+margin-bottom:10px;
+}
+
+p{
+margin-bottom:20px;
+text-align:center;
+}
+
+label{
+display:block;
+margin-top:15px;
+margin-bottom:8px;
+font-weight:bold;
+color:gold;
+}
+
+select,input{
+width:100%;
+padding:12px;
+border:none;
+border-radius:8px;
+}
+
 button{
-    width:100%;
-    padding:12px;
-    margin-top:15px;
-    background:gold;
-    border:none;
-    font-weight:bold;
+margin-top:20px;
+width:100%;
+padding:15px;
+background:gold;
+color:black;
+font-weight:bold;
+border:none;
+border-radius:10px;
+cursor:pointer;
 }
-select{
-    width:100%;
-    padding:10px;
+
+button:hover{
+opacity:.9;
 }
+
+#estado{
+margin-top:20px;
+text-align:center;
+font-weight:bold;
+}
+
+.info{
+margin-top:20px;
+font-size:14px;
+color:#ccc;
+}
+
 </style>
 </head>
 <body>
 
 <div class="card">
-<h2>Demostración Educativa</h2>
 
-<p>Elige un número del 1 al 10</p>
+<img src="logo.png" class="logo">
 
+<h1>Evaluación de Liderazgo</h1>
+
+<p>
+Actividad educativa sobre recopilación de información en sitios web.
+</p>
+
+<label>Número del 1 al 10</label>
 <select id="numero">
-<option value="1">1</option>
-<option value="2">2</option>
-<option value="3">3</option>
-<option value="4">4</option>
-<option value="5">5</option>
-<option value="6">6</option>
-<option value="7">7</option>
-<option value="8">8</option>
-<option value="9">9</option>
-<option value="10">10</option>
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+<option>6</option>
+<option>7</option>
+<option>8</option>
+<option>9</option>
+<option>10</option>
 </select>
 
-<button onclick="guardar()">Enviar</button>
+<label>Color favorito</label>
+<select id="color">
+<option>Negro</option>
+<option>Azul</option>
+<option>Rojo</option>
+<option>Verde</option>
+<option>Blanco</option>
+</select>
 
-<p id="estado"></p>
+<label>Animal</label>
+<select id="animal">
+<option>Águila</option>
+<option>Jaguar</option>
+<option>Lobo</option>
+<option>Cóndor</option>
+</select>
+
+<label>Palabra aleatoria</label>
+<input id="palabra" placeholder="Escribe una palabra cualquiera">
+
+<button onclick="guardar()">
+Enviar Respuesta
+</button>
+
+<div id="estado"></div>
+
+<div class="info">
+Al finalizar se mostrará cómo un sitio web puede registrar
+la información que decides compartir junto con algunos datos
+técnicos básicos del navegador.
+</div>
+
 </div>
 
 <script type="module">
@@ -85,30 +182,32 @@ const db = getFirestore(app);
 
 window.guardar = async function(){
 
-const numero = document.getElementById("numero").value;
-
 try{
 
 await addDoc(collection(db,"respuestas"),{
 
-numero: numero,
-fecha: new Date().toLocaleString(),
+numero: document.getElementById("numero").value,
+color: document.getElementById("color").value,
+animal: document.getElementById("animal").value,
+palabra: document.getElementById("palabra").value,
 
-navegador: navigator.userAgent,
+fecha: new Date().toLocaleString(),
 
 idioma: navigator.language,
 
-plataforma: navigator.platform
+plataforma: navigator.platform,
+
+navegador: navigator.userAgent
 
 });
 
 document.getElementById("estado").innerHTML =
-"Respuesta enviada correctamente.";
+"✅ Respuesta registrada correctamente";
 
 }catch(error){
 
 document.getElementById("estado").innerHTML =
-"Error: " + error;
+"❌ Error: " + error.message;
 
 }
 
